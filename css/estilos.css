@@ -1,0 +1,95 @@
+body {
+    background-image: url(../img/fondo.svg);
+    /*background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;*/
+}
+
+/* cudro contenedor de fromulario */ 
+.formulario {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.568);
+    color: white;
+}
+
+/*fromulario*/
+.form-control {
+    background: rgba(80, 80, 80, 0.3);
+    border-style: none;
+    transition: 0.5s ease-in;
+    outline: none;
+    box-shadow: none;
+    color: rgb(0, 0, 0);
+    font-weight:bold
+}
+
+/* enfoke de formulario*/
+.form-control:focus {
+    background: #6082f0;
+    box-shadow: none;
+    outline: none;
+    color: white;
+}
+
+/* text de formulario*/
+.form-control::placeholder {
+    color: white;
+}
+
+/*boton*/
+.ingresar {
+    background: #6082f0;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 700!important;
+    color: white;
+    /*box-shadow: 0 0 30px rgba(0, 0, 0, 0.568);  sonbras*/
+    transition: 0.5s ease-in;
+}
+
+/*cambia color de texto ingresa*/
+.ingresar:hover {
+    color: rgb(255, 255, 255);
+}
+/*formato de texto olvide contra*/
+.olvide {
+    color: white;
+    text-decoration-style: none;
+    text-decoration-line: none;
+}
+/*evitar formato hipervinculo*/
+.olvide:hover {
+    color: white;
+    text-decoration-style: none;
+    text-decoration-line: none;
+    cursor: pointer;
+}
+.imgHome {
+    width:100px;
+    height:100px;
+    border-radius:150px;
+    border:8px solid #6082f0;
+}
+.imgPerfil {
+    width:150px;
+    height:150px;
+    border-radius:150px;
+    border:8px solid #6082f0;
+}
+.imghomeletras {
+    width:80px;
+    height:80px;
+}
+.imgletras {
+    width:100px;
+    height:100px;
+}
+.color{
+    color: white;  
+}
+
+.textTitle{
+    color: #202020;
+}
