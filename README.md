@@ -1,10 +1,11 @@
 # tienda
-Ruta del archivo a configurar para agregar el DNS a XAMPP
+## Ruta del archivo a configurar para agregar el DNS a XAMPP
 
-C:\xampp2\apache\conf\extra\httpd-vhosts.conf
+### C:\xampp2\apache\conf\extra\httpd-vhosts.conf
 
-Agregar siguientes lineas al final
+## Agregar siguientes lineas al final
 
+```
 NameVirtualHost *:80
 
 <VirtualHost *:80>
@@ -19,11 +20,14 @@ NameVirtualHost *:80
     # Allow from all
   </Directory>
 </VirtualHost>
+```
+## Ruta del archivo donde se agrega el host a la maquina local
 
-Ruta del archivo donde se agrega el host a la maquina local
-C:\Windows\System32\drivers\etc\hosts
+### C:\Windows\System32\drivers\etc\hosts
 
-Agregar al final del archivo.
+## Agregar al final del archivo.
+```
 127.0.0.1 www.tienda.local
+```
 
-Reiniciar XAMPP
+## Reiniciar XAMPP
