@@ -304,8 +304,14 @@ if($_SESSION["logueado"]==TRUE){
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Cantidad Vendida en kilos o gramos</label>
-                                            <input style="text-align: -webkit-center;" type="number" id="cantidad_kilo" autofocus  name="cantidad_kilo" class="form-control" value="" >
+                                            <label>Cantidad Vendida en kilos</label>
+                                            <input style="text-align: -webkit-center;" onchange="calcular_venta_kilo()" type="number" id="cantidad_kilo" autofocus  name="cantidad_kilo" class="form-control" value="" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Precio a pagar</label>
+                                            <input style="text-align: -webkit-center;" type="number" id="precio_kilo_individual" autofocus  name="cantidad_kilo" class="form-control" value="" >
                                         </div>
                                     </div>
                                 </div>
@@ -337,8 +343,15 @@ if($_SESSION["logueado"]==TRUE){
 }
 ?>
 <script type="text/javascript">
+    function calcular_venta_kilo() {
+        $('#cantidad_kilo').val()
+        var precio_kilo=$("#precio_kilo").val()
+        var operacion=precio_kilo*$("#cantidad_kilo").val()
+        $("#precio_kilo_individual").val(operacion)
+    }
     function cerrar_venta_kilo() {
         $('#precios_por_kilo').css("display", "");
+        $("#precio_kilo_individual").val("")
         document.getElementById("codigo").focus();
     }
     function terminar_venta_por_kilo() {
@@ -346,9 +359,13 @@ if($_SESSION["logueado"]==TRUE){
             alert('Agregar Cantidad Vendida');
             return
         }
-        var precio_kilo=$("#precio_kilo").val()
-        var operacion=precio_kilo*$("#cantidad_kilo").val()
-        $("#precio").val(operacion)
+        if($("#precio_kilo_individual").val()==""){
+            alert('Agregar Cantidad Vendida');
+            return
+        }
+        // var precio_kilo=$("#precio_kilo").val()
+        // var operacion=precio_kilo*$("#cantidad_kilo").val()
+        $("#precio").val($("#precio_kilo_individual").val())
         $('#precios_por_kilo').css("display", "");
         agregar()
         document.getElementById("codigo").focus();
@@ -463,7 +480,7 @@ if($_SESSION["logueado"]==TRUE){
         sum=0
         if(tabla){
             tabla.forEach(element => {
-                sum=sum+element.precio_total
+                sum=sum+parseFloat(element.precio_total)
 
             });
         }
@@ -531,7 +548,8 @@ if($_SESSION["logueado"]==TRUE){
                     if(response.data.kilo==0){
                         $("#cantidad").val(1)
                         $("#precio_kilo").val(0);
-                        $("#cantidad_kilo").val(0)
+                        $("#cantidad_kilo").val(0);
+                        $("#precio_kilo_individual").val("")
                         $("#texto_comision").html('');
                         $('#tiene_comision').val(0);
                         $('#comision_cantidad').val(0);
@@ -569,6 +587,7 @@ if($_SESSION["logueado"]==TRUE){
                         $("#precio").val(response.data.precio);
                         $('#precios_por_kilo').css("display", "block");
                         $("#cantidad_kilo").val("");
+                        $("#precio_kilo_individual").val("")
                         document.getElementById("cantidad_kilo").focus();
                     }
                     
@@ -661,8 +680,9 @@ if($_SESSION["logueado"]==TRUE){
                         if(element.id_productos_venta_individual==$("#id_productos_venta_individual").val()){
                             repetidos=false;
                             nuevo_producto=$("#precio").val()*$("#cantidad").val();
-                            element.precio_total=element.precio_total+nuevo_producto
-                            element.cantidad=parseInt(element.cantidad)+parseInt($("#cantidad").val())
+                            // element.precio_total=element.precio_total+nuevo_producto
+                            element.precio_total=($("#precio_kilo_individual").val()=="")?element.precio_total+nuevo_producto:parseFloat(element.precio_total)+parseFloat($("#precio_kilo_individual").val());
+                            element.cantidad=parseFloat(element.cantidad)+parseFloat($("#cantidad").val())
                             datos_nuevos=element;
                             key=i;
                         }
@@ -670,18 +690,19 @@ if($_SESSION["logueado"]==TRUE){
                         if(element.id_producto==$("#id").val()){
                             repetidos=false;
                             nuevo_producto=$("#precio").val()*$("#cantidad").val();
-                            element.precio_total=element.precio_total+nuevo_producto
-                            element.cantidad=parseInt(element.cantidad)+parseInt($("#cantidad").val())
+                            // element.precio_total=element.precio_total+nuevo_producto
+                            element.precio_total=($("#precio_kilo_individual").val()=="")?element.precio_total+nuevo_producto:parseFloat(element.precio_total)+parseFloat($("#precio_kilo_individual").val());
+                            element.cantidad=parseFloat(element.cantidad)+parseFloat($("#cantidad").val())
                             datos_nuevos=element;
                             key=i;
                         }
                     }
                 }else{
-                    
                     if(element.id_producto==$("#id").val()){
                         repetidos=false;
                         nuevo_producto=$("#precio_kilo").val()*$("#cantidad_kilo").val();
-                        element.precio_total=element.precio_total+nuevo_producto
+                        // element.precio_total=element.precio_total+nuevo_producto
+                        element.precio_total=($("#precio_kilo_individual").val()=="")?element.precio_total+nuevo_producto:parseFloat(element.precio_total)+parseFloat($("#precio_kilo_individual").val());
                         element.cantidad=parseFloat(element.cantidad)+parseFloat($("#cantidad_kilo").val())
                         datos_nuevos=element;
                         key=i;
@@ -697,7 +718,8 @@ if($_SESSION["logueado"]==TRUE){
                     // data.precio=$("#precio").val();
                     data.precio=($('#tiene_comision').val()==0?$("#precio").val():($("#precio").val()<50?parseInt($("#precio").val())+parseInt($('#comision_cantidad').val()):$("#precio").val()))
                     data.cantidad=$("#cantidad").val();
-                    data.precio_total=data.precio*data.cantidad
+                    // data.precio_total=data.precio*data.cantidad
+                    data.precio_total=($("#precio_kilo_individual").val()=="")?data.precio*data.cantidad:$("#precio_kilo_individual").val();
                     data.editar=($('#tiene_comision').val()==0?1:0)
                     tabla.push(data);
                     tabla=JSON.stringify(tabla);
@@ -710,7 +732,8 @@ if($_SESSION["logueado"]==TRUE){
                     data.nombre=$("#nombre").val();
                     data.precio=($("#precio_kilo").val()==0?$("#precio").val():$("#precio_kilo").val());
                     data.cantidad=($("#cantidad_kilo").val()==0?$("#cantidad").val():$("#cantidad_kilo").val());
-                    data.precio_total=data.precio*data.cantidad
+                    // data.precio_total=data.precio*data.cantidad
+                    data.precio_total=($("#precio_kilo_individual").val()=="")?data.precio*data.cantidad:$("#precio_kilo_individual").val();
                     data.editar=0
                     tabla.push(data);
                     tabla=JSON.stringify(tabla);
@@ -726,24 +749,25 @@ if($_SESSION["logueado"]==TRUE){
                 data.id_venta= 1;
                 data.id_producto=$("#id").val();
                 data.id_productos_venta_individual=$("#id_productos_venta_individual").val();
-                data.nombre=$("#nombre").val();
+                // data.nombre=$("#nombre").val();
                 data.nombre=$("#nombre").val();
                 data.precio=($('#tiene_comision').val()==0?$("#precio").val():($("#precio").val()<50?parseInt($("#precio").val())+parseInt($('#comision_cantidad').val()):$("#precio").val()))
                 data.cantidad=$("#cantidad").val()
                 data.editar=($('#tiene_comision').val()==0?1:0)
-                data.precio_total=data.precio*data.cantidad
+                // data.precio_total=data.precio*data.cantidad
+                data.precio_total=($("#precio_kilo_individual").val()=="")?data.precio*data.cantidad:$("#precio_kilo_individual").val();
                 data=JSON.stringify([data]);
                 localStorage.setItem("tabla", data);
             }else{
                 data.id_venta= 1;
                 data.id_producto=$("#id").val();
                 data.id_productos_venta_individual=$("#id_productos_venta_individual").val();
-                data.nombre=$("#nombre").val();
+                // data.nombre=$("#nombre").val();
                 data.nombre=$("#nombre").val();
                 data.precio=($("#precio_kilo").val()==0?$("#precio").val():$("#precio_kilo").val());
                 data.cantidad=($("#cantidad_kilo").val()==0?$("#cantidad").val():$("#cantidad_kilo").val());
                 data.editar=0
-                data.precio_total=data.precio*data.cantidad
+                data.precio_total=($("#precio_kilo_individual").val()=="")?data.precio*data.cantidad:$("#precio_kilo_individual").val();
                 data=JSON.stringify([data]);
                 localStorage.setItem("tabla", data);
             }
