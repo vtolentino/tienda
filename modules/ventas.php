@@ -682,7 +682,6 @@ if($_SESSION["logueado"]==TRUE){
                 if($('#tiene_comision').val()==1){
                     return
                 }
-                console.log
                 if($("#precio_kilo").val()==0 && $("#cantidad_kilo").val()==0){
                     if(element.id_productos_venta_individual!=""){
                         if(element.id_productos_venta_individual==$("#id_productos_venta_individual").val()){
