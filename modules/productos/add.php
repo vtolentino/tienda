@@ -33,13 +33,15 @@
             $data=$cosultar->fetch_array();
             if($data!=null && count($data)>0){
                 $new_array=[];
+                $id=0;
                 foreach ($data as $key => $value) {
                     if(!is_numeric($key)){
                         $new_array[$key]=$value;
                     }
                 }
+                $id=$new_array['idOp_Productos'];
                 $new_array=json_encode($new_array);
-                $insertar_log="INSERT INTO tiendas.Trans_Log (Tabla, Antes, Despues,idOp_Usuarios, estado, fecha_utlima_actualizacion) VALUES('Op_Productos', '{}', '{$new_array}',{$_SESSION['id']}, 1, '{$fecha}');";
+                $insertar_log="INSERT INTO Trans_Log (Tabla, id, Antes, Despues,idOp_Usuarios, estado, fecha_utlima_actualizacion) VALUES('Op_Productos',{$id}, '{}', '{$new_array}',{$_SESSION['id']}, 1, '{$fecha}');";
                 $conexion->query($insertar_log);
             }
             $error="Producto Guardado";

@@ -41,7 +41,7 @@
                 }
                 $new_array=json_encode($new_array);
                 $antes_array=json_encode($antes_array);
-                $insertar_log="INSERT INTO tiendas.Trans_Log (Tabla, Antes, Despues,idOp_Usuarios, estado, fecha_utlima_actualizacion) VALUES('Op_Productos', '{$antes_array}', '{$new_array}',{$_SESSION['id']}, 1, '{$fecha}');";
+                $insertar_log="INSERT INTO tiendas.Trans_Log (Tabla, id, Antes, Despues,idOp_Usuarios, estado, fecha_utlima_actualizacion) VALUES('Op_Productos',{$_POST['id']}, '{$antes_array}', '{$new_array}',{$_SESSION['id']}, 1, '{$fecha}');";
                 $conexion->query($insertar_log);
             }
             $error="Producto Guardado";

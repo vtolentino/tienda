@@ -360,7 +360,7 @@ if($_SESSION["logueado"]==TRUE){
             return
         }
         if($("#precio_kilo_individual").val()==""){
-            alert('Agregar Cantidad Vendida');
+            alert('Agregar Precio');
             return
         }
         // var precio_kilo=$("#precio_kilo").val()
@@ -623,7 +623,16 @@ if($_SESSION["logueado"]==TRUE){
                     $("#id").val(response.data.idOp_Productos);
                     $("#precio").val(response.data.precio);
                     $("#id_productos_venta_individual").val("")
-                    agregar()
+                    if(response.data.kilo==1){
+                        $("#codigo").val('')
+                        $("#precio_kilo").val(response.data.precio);
+                        $('#venta_producto').css("display", "none");
+                        $('#precios_por_kilo').css("display", "block");
+                        document.getElementById("cantidad_kilo").focus();
+                        // Agregar_productos()
+                    }else{
+                        agregar()   
+                    }
                     // if(response.data.cantidad>0){
                     //     $('#venta_producto').css("display", "");
                     //     $("#nombre").val(response.data.nombre);
@@ -667,7 +676,6 @@ if($_SESSION["logueado"]==TRUE){
         data.precio_total=0;
         tabla=JSON.parse(tabla);
         if(tabla!=null && tabla.length>0 ){
-            repetidos=true;
             key="";
             datos_nuevos={};
             tabla.forEach(function(element,i) {
@@ -888,7 +896,7 @@ if($_SESSION["logueado"]==TRUE){
         sum=0
         if(tabla){
             tabla.forEach(element => {
-                sum=sum+element.precio_total
+                sum=parseFloat(sum)+parseFloat(element.precio_total)
 
             });
         }

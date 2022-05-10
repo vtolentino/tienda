@@ -56,6 +56,7 @@ CREATE TABLE `Op_productosIndividual` (
 CREATE TABLE `Trans_Log` (
   `idTrans_Log` int NOT NULL AUTO_INCREMENT,
   `Tabla` varchar(100) NOT NULL,
+  `id` int DEFAULT NULL,
   `Antes` json NOT NULL,
   `Despues` json NOT NULL,
   `idOp_Usuarios` int NOT NULL,
