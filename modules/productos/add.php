@@ -1,4 +1,5 @@
 <?php
+    session_start();    
     if(isset($_POST["enviar"])) {
         require("../../session/conexion/bd.php");
         $kilos="0";
@@ -24,9 +25,23 @@
             $_POST['precio']=0;
         }
         $fecha=date('Y-m-d H:i:s');
-        $insert ="INSERT INTO Op_Productos (codigo,nombre,kilo,cantidad,precio,comision,cantidad_comision,fecha_utlima_actualizacion,estado) 
+        $insert ="INSERT INTO Op_Productos (codigo,nombre,kilo,cantidad,precio,comision,cantidad_comision,fecha_utlima_actualizacion,estado)
         VALUES ('{$_POST['codigo']}','{$_POST['nombre']}','{$kilos}','{$_POST['cantidad']}','{$_POST['precio']}','{$comision}','{$cantidad_comision}','{$fecha}','{$_POST['estado']}');";
         if($resultado = $conexion->query($insert)) {
+            $cosultar = "select * from Op_Productos where codigo='{$_POST['codigo']}' and nombre='{$_POST['nombre']}' and kilo='{$kilos}' and cantidad='{$_POST['cantidad']}' and precio='{$_POST['precio']}' and comision='{$comision}' and cantidad_comision='{$cantidad_comision}' and fecha_utlima_actualizacion='{$fecha}' and estado='{$_POST['estado']}'";
+            $cosultar=$conexion->query($cosultar);
+            $data=$cosultar->fetch_array();
+            if($data!=null && count($data)>0){
+                $new_array=[];
+                foreach ($data as $key => $value) {
+                    if(!is_numeric($key)){
+                        $new_array[$key]=$value;
+                    }
+                }
+                $new_array=json_encode($new_array);
+                $insertar_log="INSERT INTO tiendas.Trans_Log (Tabla, Antes, Despues,idOp_Usuarios, estado, fecha_utlima_actualizacion) VALUES('Op_Productos', '{}', '{$new_array}',{$_SESSION['id']}, 1, '{$fecha}');";
+                $conexion->query($insertar_log);
+            }
             $error="Producto Guardado";
             Header("Location: ../productos.php?mensaje=".$error."");
             return;

@@ -50,3 +50,18 @@ CREATE TABLE `Op_productosIndividual` (
   KEY `Op_productosIndividual_FK` (`idOp_Productos`),
   CONSTRAINT `Op_productosIndividual_FK` FOREIGN KEY (`idOp_Productos`) REFERENCES `Op_Productos` (`idOp_Productos`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0;
+
+-- tiendas.Trans_Log definition
+
+CREATE TABLE `Trans_Log` (
+  `idTrans_Log` int NOT NULL AUTO_INCREMENT,
+  `Tabla` varchar(100) NOT NULL,
+  `Antes` json NOT NULL,
+  `Despues` json NOT NULL,
+  `idOp_Usuarios` int NOT NULL,
+  `estado` int NOT NULL DEFAULT '0',
+  `fecha_utlima_actualizacion` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
+  PRIMARY KEY (`idTrans_Log`),
+  KEY `Trans_Log_FK` (`idOp_Usuarios`),
+  CONSTRAINT `Trans_Log_FK` FOREIGN KEY (`idOp_Usuarios`) REFERENCES `Op_Usuarios` (`idOp_Usuarios`)
+) ENGINE=InnoDB;
