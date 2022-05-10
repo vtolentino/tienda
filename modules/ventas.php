@@ -676,6 +676,7 @@ if($_SESSION["logueado"]==TRUE){
         data.precio_total=0;
         tabla=JSON.parse(tabla);
         if(tabla!=null && tabla.length>0 ){
+            repetidos=true;
             key="";
             datos_nuevos={};
             tabla.forEach(function(element,i) {
@@ -752,6 +753,7 @@ if($_SESSION["logueado"]==TRUE){
                 localStorage.setItem("tabla", tabla);
             } 
         }else{
+            console.log(data)
             if($("#precio_kilo").val()==0 && $("#cantidad_kilo").val()==0){
                 data.id_venta= 1;
                 data.id_producto=$("#id").val();
