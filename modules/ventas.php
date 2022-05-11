@@ -631,6 +631,9 @@ if($_SESSION["logueado"]==TRUE){
                         document.getElementById("cantidad_kilo").focus();
                         // Agregar_productos()
                     }else{
+                        $("#cantidad_kilo").val(0)
+                        $("#precio_kilo").val(0);
+                        $("#precio_kilo_individual").val("")
                         agregar()   
                     }
                     // if(response.data.cantidad>0){
