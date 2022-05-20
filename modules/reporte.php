@@ -50,13 +50,13 @@ if($_SESSION["logueado"]==TRUE){
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label class="title">Fecha inicio</label>
-                                                    <input type="date" name="buscador_star" id='buscador_star' class="form-control">
+                                                    <input type="datetime-local" name="buscador_star" id='buscador_star' class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label class="title">Fecha final</label>
-                                                    <input type="date" name="buscador_end" id='buscador_end' class="form-control">
+                                                    <input type="datetime-local" name="buscador_end" id='buscador_end' class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
@@ -83,11 +83,11 @@ if($_SESSION["logueado"]==TRUE){
                                         <tbody>
                                         <?php
                                         require("../session/conexion/bd.php");
-                                        $buscador_star=date('Y-m-d');
-                                        $buscador_end=date('Y-m-d');
+                                        $buscador_star=date('Y-m-d').' 00:00:00';
+                                        $buscador_end=date('Y-m-d').' 23:59:59';
                                         if(isset($_GET['buscador_star']) && isset($_GET['buscador_end'])){
-                                            $buscador_star=$_GET['buscador_star'];
-                                            $buscador_end=$_GET['buscador_end'];
+                                            $buscador_star=str_replace("T"," ",$_GET['buscador_star']);
+                                            $buscador_end=str_replace("T"," ",$_GET['buscador_end']);
                                         }
                                         $usuario='';
                                         if(isset($_GET['select_usuarios']) && $_GET['select_usuarios']!=""){
@@ -120,7 +120,7 @@ if($_SESSION["logueado"]==TRUE){
                                                     left join Op_Productos p2 on
                                                         p2.idOp_Productos =vi.idOp_Productos 
                                                     where
-                                                        v.Fecha_venta BETWEEN '{$buscador_star} 00:00:00' and '{$buscador_end} 23:59:59 '
+                                                        v.Fecha_venta BETWEEN '{$buscador_star}' and '{$buscador_end}'
                                                         {$usuario}
                                                     order by
                                                         Fecha_venta desc;";
@@ -235,11 +235,16 @@ if($_SESSION["logueado"]==TRUE){
     }
     if(typeof window.history.pushState == 'function') {
         let today = new Date();
-        
-        $('#buscador_star').val(today.getFullYear()+'-'+(today.getMonth()>9?(today.getMonth()+1):'0'+(today.getMonth()+1))+'-'+(today.getDate()>9?today.getDate():'0'+today.getDate()))
-
-        $('#buscador_end').val(today.getFullYear()+'-'+(today.getMonth()>9?(today.getMonth()+1):'0'+(today.getMonth()+1))+'-'+(today.getDate()>9?today.getDate():'0'+today.getDate()))
-
+        $('#buscador_star').val(
+            today.getFullYear()+'-'+
+            (today.getMonth()>9?(today.getMonth()+1):'0'+(today.getMonth()+1))+'-'+
+            (today.getDate()>9?today.getDate():'0'+today.getDate())+'T00:00:00'
+            
+        )
+        $('#buscador_end').val(
+            today.getFullYear()+'-'+(today.getMonth()>9?(today.getMonth()+1):'0'+(today.getMonth()+1))+'-'+
+            (today.getDate()>9?today.getDate():'0'+today.getDate())+'T'+
+            today.getHours()+':'+today.getMinutes()+':00')
         window.history.pushState({}, "Hide", '<?php echo $_SERVER['PHP_SELF'];?>');
         
     }
