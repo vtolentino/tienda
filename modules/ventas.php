@@ -174,7 +174,8 @@ if($_SESSION["logueado"]==TRUE){
                                                 where
                                                 v.tipo=1 and v.Fecha_venta BETWEEN '{$auxBuscador} 00:00:00' and '{$auxBuscador} 23:59:59'
                                                 order by
-                                                    Fecha_venta desc;";
+                                                    Fecha_venta desc
+                                                limit 25;";
                                     $resultado=$conexion->query($consulta);
                                     $suma_venta=0;
                                     $suma_reembolso=0;
@@ -199,7 +200,7 @@ if($_SESSION["logueado"]==TRUE){
                                     </tbody>
                                 </table>
                                 <div class="content">
-                                    <div class="row">
+                                    <div class="row"  style=<?php echo ($_SESSION['tipo']!=1 ? "visibility:hidden;" : "")?>>
                                         <div class="col-md-12">
                                             <div class='alert alert-danger pull-right'>
                                                 <span><?php echo $suma_venta-$suma_reembolso ?></span>
@@ -402,9 +403,9 @@ if($_SESSION["logueado"]==TRUE){
             if(precios_variados=='block'){
                 terminar_variado()
             }
-            if(precios_por_kilo=="" && div1=="" && precios_variados==""){
-                pagar()
-            }
+            // if(precios_por_kilo=="" && div1=="" && precios_variados==""){
+            //     pagar()
+            // }
 
         }
     }

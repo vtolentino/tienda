@@ -35,15 +35,15 @@
                                 <p>Usuarios</p>
                             </a>
                         </li>
+                        <li>
+                            <a href="reporte.php">
+                                <i class="pe-7s-graph"></i>
+                                <p>Reportes de Venta</p>
+                            </a>
+                        </li>
                     <?php 
                 }
             ?>
-            <li>
-                <a href="reporte.php">
-                    <i class="pe-7s-graph"></i>
-                    <p>Reportes de Venta</p>
-                </a>
-            </li>
             <li>
                 <!-- <a href="../session/login/cerrar.php"> -->
                 <a onclick="limpiarNavegador()">
