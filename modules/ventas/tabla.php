@@ -1,6 +1,7 @@
 <?php
     $colums="";
     if(isset($_POST['datos'])){
+        rsort($_POST['datos']);
         foreach ($_POST['datos'] as $key => $value) {
             $editar="<a onClick='operaciones({$value['id_venta']},{$value['cantidad']},1)'>
                         <i style='font-size: 30px;cursor: pointer;' class='pe-7s-less'></i>

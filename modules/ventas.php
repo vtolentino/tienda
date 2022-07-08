@@ -69,7 +69,7 @@ if($_SESSION["logueado"]==TRUE){
                                         <div class="col-md-10">
                                             <div class="form-group">
                                                 <label>Lista Prodcutos</label>
-                                                <select class="form-control" class="mi-selector" name="producto_codigo" id="producto_codigo">
+                                                <select class="form-control" class="mi-selector" onchange="bottonAgregar()" name="producto_codigo" id="producto_codigo">
                                                 </select>
                                             </div>
                                         </div>
@@ -82,7 +82,7 @@ if($_SESSION["logueado"]==TRUE){
                                         <div class="col-md-10">
                                             <div class="form-group">
                                                 <label>Lista Prodcutos individuales</label>
-                                                <select class="form-control" class="mi-selector" name="producto_codigo_individual" id="producto_codigo_individual">
+                                                <select class="form-control" class="mi-selector" onchange="bottonAgregarIndividual()" name="producto_codigo_individual" id="producto_codigo_individual">
                                                 </select>
                                             </div>
                                         </div>
@@ -403,16 +403,18 @@ if($_SESSION["logueado"]==TRUE){
             if(precios_variados=='block'){
                 terminar_variado()
             }
-            // if(precios_por_kilo=="" && div1=="" && precios_variados==""){
-            //     pagar()
-            // }
+            if(precios_por_kilo=="" && div1=="" && precios_variados==""){
+                pagar()
+            }
 
         }
     }
     function bottonAgregar() {
         $("#id_productos_venta_individual").val('')
-        $("#id_productos_venta").val(document.getElementById('producto_codigo').value);
-        Agregar_productos()
+        if(document.getElementById('producto_codigo').value!=0){
+            $("#id_productos_venta").val(document.getElementById('producto_codigo').value);
+            Agregar_productos()
+        }
         document.getElementById("codigo").focus();
     }
     function terminar_variado() {
@@ -436,6 +438,10 @@ if($_SESSION["logueado"]==TRUE){
         .done(function(response){
             if(!response.error){
                 var producto_codigo = document.getElementById('producto_codigo');
+                let opcion = document.createElement('option');
+                opcion.value = "0";
+                opcion.text = 'Selecione producto';
+                producto_codigo.add(opcion);    
                 response.data.forEach(function(producto){
                     let opcion = document.createElement('option');
                     opcion.value = producto.idOp_Productos;
@@ -459,6 +465,10 @@ if($_SESSION["logueado"]==TRUE){
         .done(function(response){
             if(!response.error){
                 var producto_codigo = document.getElementById('producto_codigo_individual');
+                let opcion = document.createElement('option');
+                opcion.value = "0";
+                opcion.text = 'Selecione producto';
+                producto_codigo.add(opcion);    
                 response.data.forEach(function(producto){
                     let opcion = document.createElement('option');
                     opcion.value = producto.idOp_productosIndividual;
@@ -472,8 +482,10 @@ if($_SESSION["logueado"]==TRUE){
         })
     }
     function bottonAgregarIndividual() {
-        $("#id_productos_venta_individual").val(document.getElementById('producto_codigo_individual').value);
-        Agregar_productos()
+        if(document.getElementById('producto_codigo_individual').value!=0){
+            $("#id_productos_venta_individual").val(document.getElementById('producto_codigo_individual').value);
+            Agregar_productos()
+        }
         document.getElementById("codigo").focus();
     }
     function pagar() {
@@ -792,6 +804,8 @@ if($_SESSION["logueado"]==TRUE){
         $("#id").val("");
         $("#precio").val("");
         $('#venta_producto').css("display", "none");
+        $("#producto_codigo").select2("val", "0");
+        $("#producto_codigo_individual").select2("val", "0");
         var tabla = JSON.parse(localStorage.getItem("tabla"));
         $.ajax({
             type: "POST",
